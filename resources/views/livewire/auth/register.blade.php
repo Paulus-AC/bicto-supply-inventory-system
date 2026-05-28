@@ -19,6 +19,18 @@
                 :placeholder="__('Full name')"
             />
 
+            <!-- Employee ID -->
+            <flux:input
+                name="employee_id"
+                :label="__('Employee ID')"
+                :value="old('employee_id')"
+                type="text"
+                required
+                autofocus
+                autocomplete="employee_id"
+                :placeholder="__('Employee ID')"
+            />
+
             <!-- Email Address -->
             <flux:input
                 name="email"
@@ -29,6 +41,20 @@
                 autocomplete="email"
                 placeholder="email@example.com"
             />
+
+            <!-- Role Selection -->
+            <flux:select
+                name="role"
+                :label="__('Role')"
+                required
+            >
+                <option value="" disabled selected>{{ __('Select a role') }}</option>
+                @foreach (\App\Models\User::ROLE_TYPES as $role => $label)
+                    <option value="{{ $role }}" {{ old('role') === $role ? 'selected' : '' }}>
+                        {{ __($label) }}
+                    </option>
+                @endforeach
+            </flux:select>
 
             <!-- Password -->
             <flux:input

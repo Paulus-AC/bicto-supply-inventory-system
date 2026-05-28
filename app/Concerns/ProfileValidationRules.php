@@ -17,7 +17,9 @@ trait ProfileValidationRules
     {
         return [
             'name' => $this->nameRules(),
+            'employee_id' => $this->employeeIdRules(),
             'email' => $this->emailRules($userId),
+            'role' => $this->roleRules(),
         ];
     }
 
@@ -29,6 +31,16 @@ trait ProfileValidationRules
     protected function nameRules(): array
     {
         return ['required', 'string', 'max:255'];
+    }
+
+    /**
+     * Get the validation rules used to validate user employee IDs.
+     *
+     * @return array<int, ValidationRule|array<mixed>|string>
+     */
+    protected function employeeIdRules(): array
+    {
+        return ['required', 'string', 'max:255', Rule::unique(User::class)];
     }
 
     /**
@@ -47,5 +59,15 @@ trait ProfileValidationRules
                 ? Rule::unique(User::class)
                 : Rule::unique(User::class)->ignore($userId),
         ];
+    }
+
+    /**
+     * Get the validation rules used to validate user roles.
+     *
+     * @return array<int, ValidationRule|array<mixed>|string>
+     */
+    protected function roleRules(): array
+    {
+        return ['required', Rule::in(array_keys(User::ROLE_TYPES))];
     }
 }
