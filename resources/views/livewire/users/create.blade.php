@@ -1,6 +1,6 @@
 <div>
-    <flux:modal :dismissible="false" name="create-user" class="w-full max-w-lg md:w-96">
-        <form method="POST" wire:submit="createUser" class="space-y-8">
+    <flux:modal :dismissible="false" name="create-user" class="md:w-lg">
+        <form method="POST" wire:submit.prevent="createUser" class="space-y-8">
             @csrf
             <div class="space-y-6">
                 <div>

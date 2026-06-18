@@ -4,6 +4,7 @@ namespace App\Livewire\Users;
 
 use App\Livewire\BaseComponent;
 use App\Models\User;
+use Flux\Flux;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\WithPagination;
@@ -12,7 +13,7 @@ use Livewire\WithPagination;
 class Listing extends BaseComponent
 {
     public string $search = '';
-
+    
     public function mount()
     {
         //
@@ -31,7 +32,7 @@ class Listing extends BaseComponent
     public function deleteUser(int $id)
     {
         $user = User::findOrFail($id);
-        
+
         $user->delete();
     }
 
