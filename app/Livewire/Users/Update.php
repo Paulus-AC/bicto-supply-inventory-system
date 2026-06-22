@@ -2,13 +2,15 @@
 
 namespace App\Livewire\Users;
 
+use App\Livewire\BaseComponent;
 use App\Livewire\Forms\UpdateUserForm;
 use App\Models\User;
+use Exception;
 use Flux\Flux;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
-use Livewire\Component;
 
-class Update extends Component
+class Update extends BaseComponent
 {
     public UpdateUserForm $form;
 
@@ -26,26 +28,30 @@ class Update extends Component
 
         $user = User::findOrFail($this->form->user_id);
 
-        $user->update(
-            $this->form->payload()
-        );
+        DB::beginTransaction();
+        try {
 
-        if (filled($this->form->password)) {
-            $user->update([
-                'password' => $this->form->password,
-            ]);
+            $user->update(
+                $this->form->payload()
+            );
+
+            $this->form->reset();
+
+            $this->success(
+                message: 'User successfully updated.',
+                modal: 'update-user',
+                event: 'user-updated'
+            );
+
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            $this->reportException($exception);
+            $this->error(
+                message: 'Failed to update user.',
+                modal: 'update-user'
+            );
         }
-
-        $this->form->reset();
-
-        $this->dispatch('user-updated');
-
-        Flux::toast(
-            text: 'User successfully updated',
-            variant: 'success'
-        );
-
-        Flux::modal('update-user')->close();
     }
 
     public function render()

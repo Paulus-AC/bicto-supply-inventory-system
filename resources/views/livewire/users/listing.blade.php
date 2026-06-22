@@ -11,7 +11,7 @@
 
             <flux:modal.trigger name="create-user">
                 <flux:button variant="primary" size="sm" icon="plus-circle" class="cursor-pointer">
-                    {{ __('Add New User') }}
+                    {{ __('Add User') }}
                 </flux:button>
             </flux:modal.trigger>
         </div>
@@ -46,20 +46,18 @@
                             <flux:table.cell align="center">
                                 <div class="gap-2">
                                     <flux:modal.trigger name="update-user">
-                                        <flux:button variant="primary" size="sm" wire:click="$dispatch('update-user', { userId: {{ $user->id }} })">
-                                            Update
+                                        <flux:button variant="primary" size="sm" icon="pencil" wire:click="$dispatch('update-user', { userId: {{ $user->id }} })">
                                         </flux:button>
                                     </flux:modal.trigger>
 
                                     <flux:modal.trigger name="delete-confirmation-modal">
-                                        <flux:button variant="danger" size="sm" wire:click="$dispatch('confirm-delete', 
+                                        <flux:button variant="danger" size="sm" icon="trash" wire:click="$dispatch('confirm-delete', 
                                                                 { id: {{ $user->id }},
                                                                 dispatchAction: 'delete-user',
                                                                 modalName: 'delete-confirmation-modal',
                                                                 heading: 'Delete User',
                                                                 subheading: 'Are you sure you want to delete {{ $user->name }} account. This cannot be undone.' 
                                                                 })">
-                                            Delete
                                         </flux:button>
                                     </flux:modal.trigger>
                                 </div>

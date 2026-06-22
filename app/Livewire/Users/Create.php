@@ -5,7 +5,9 @@ namespace App\Livewire\Users;
 use App\Livewire\BaseComponent;
 use App\Livewire\Forms\CreateUserForm;
 use App\Models\User;
-use Flux\Flux;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 
 class Create extends BaseComponent
 {
@@ -15,22 +17,32 @@ class Create extends BaseComponent
     {
         $this->form->validate();
 
-        User::create(
-            $this->form->payload()
-        );
+        DB::beginTransaction();
+        try {
 
-        $this->form->reset();
+            User::create(
+                $this->form->payload()
+            );
 
-        $this->dispatch('user-created');
+            $this->form->reset();
 
-        Flux::toast(
-            text: 'User successfully created',
-            variant: 'success'
-        );
+            $this->success(
+                message: 'User created successfully.',
+                modal: 'create-user',
+                event: 'user-created'
+            );
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollback();
+            $this->reportException($exception);
 
-        Flux::modal('create-user')->close();
+            $this->error(
+                message: 'Failed to create user.',
+                modal: 'create-user'
+            );
+        }
     }
-
+    
     public function render()
     {
         return view('livewire.users.create');

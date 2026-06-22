@@ -10,11 +10,17 @@ use Livewire\Form;
 class UpdateUserForm extends Form
 {
     public int $user_id = 0;
+
     public string $name = '';
+
     public string $employee_id = '';
+
     public string $email = '';
+
     public string $role = '';
+
     public string $password = '';
+
     public string $password_confirmation = '';
 
     public function rules(): array
@@ -64,11 +70,17 @@ class UpdateUserForm extends Form
 
     public function payload(): array
     {
-        return [
+        $payload = [
             'name' => $this->name,
             'employee_id' => $this->employee_id,
             'email' => $this->email,
             'role' => $this->role,
         ];
+
+        if (filled($this->password)) {
+            $payload['password'] = $this->password;
+        }
+
+        return $payload;
     }
 }

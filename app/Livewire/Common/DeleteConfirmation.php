@@ -19,7 +19,7 @@ class DeleteConfirmation extends BaseComponent
     }
 
     #[On('confirm-delete')]
-    public function deleteUser(int $id, string $dispatchAction, string $modalName, string $heading, string $subheading)
+    public function confirmDelete(int $id, string $dispatchAction, string $modalName, string $heading, string $subheading)
     {
 
         $this->id = $id;
