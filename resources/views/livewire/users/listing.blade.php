@@ -1,20 +1,16 @@
 <section class="w-full">
-    @include('partials.users-heading')
+    @include('partials.section-heading', ['heading' => __('Manage Users')])
 
-    <x-users.layout>
-        <div class="flex flex-col gap-3 justify-end sm:flex-row sm:items-center">
-
-            <div class="w-full sm:w-56">
-                <flux:input wire:model.live.debounce.300ms='search' class="w-full" icon="magnifying-glass"
-                    placeholder="Search..." />
-            </div>
+    <x-common.layout>
+        <x-common.table-toolbar>
 
             <flux:modal.trigger name="create-user">
-                <flux:button variant="primary" size="sm" icon="plus-circle" class="cursor-pointer">
-                    {{ __('Add User') }}
+                <flux:button variant="primary" size="sm" icon="plus-circle">
+                    Add User
                 </flux:button>
             </flux:modal.trigger>
-        </div>
+
+        </x-common.table-toolbar>
 
         <div
             class="mt-6 w-full rounded-xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
@@ -46,18 +42,19 @@
                             <flux:table.cell align="center">
                                 <div class="gap-2">
                                     <flux:modal.trigger name="update-user">
-                                        <flux:button variant="primary" size="sm" icon="pencil" wire:click="$dispatch('update-user', { userId: {{ $user->id }} })">
+                                        <flux:button variant="primary" size="sm" icon="pencil"
+                                            wire:click="$dispatch('update-user', { userId: {{ $user->id }} })">
                                         </flux:button>
                                     </flux:modal.trigger>
 
                                     <flux:modal.trigger name="delete-confirmation-modal">
                                         <flux:button variant="danger" size="sm" icon="trash" wire:click="$dispatch('confirm-delete', 
-                                                                { id: {{ $user->id }},
-                                                                dispatchAction: 'delete-user',
-                                                                modalName: 'delete-confirmation-modal',
-                                                                heading: 'Delete User',
-                                                                subheading: 'Are you sure you want to delete {{ $user->name }} account. This cannot be undone.' 
-                                                                })">
+                                                                    { id: {{ $user->id }},
+                                                                    dispatchAction: 'delete-user',
+                                                                    modalName: 'delete-confirmation-modal',
+                                                                    heading: 'Delete User',
+                                                                    subheading: 'Are you sure you want to delete {{ $user->name }} account. This cannot be undone.' 
+                                                                    })">
                                         </flux:button>
                                     </flux:modal.trigger>
                                 </div>
@@ -78,5 +75,5 @@
         <livewire:users.create />
         <livewire:users.update />
         <livewire:common.delete-confirmation />
-    </x-users.layout>
+        </x-users.layout>
 </section>

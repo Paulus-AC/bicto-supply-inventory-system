@@ -18,9 +18,9 @@
                     <flux:sidebar.item icon="users" :href="route('users.listing')" :current="request()->routeIs('users.listing', 'users.create')" wire:navigate>
                         {{ __('Users') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.group expandable expanded="false" icon="cube" heading="Supply" class="grid">
+                    <flux:sidebar.group expandable :expanded="request()->routeIs('categories.listing')" :href="route('categories.listing')" icon="cube" heading="Supply" class="grid">
                         <flux:sidebar.item href="#">Items</flux:sidebar.item>
-                        <flux:sidebar.item href="#">Category</flux:sidebar.item>
+                        <flux:sidebar.item :href="route('categories.listing')" :current="request()->routeIs('categories.listing')">Category</flux:sidebar.item>
                         <flux:sidebar.item href="#">Unit</flux:sidebar.item>
                     </flux:sidebar.group>
                     <flux:sidebar.item icon="truck" :href="route('dashboard')" :current="request()->routeIs('stock')" wire:navigate>
