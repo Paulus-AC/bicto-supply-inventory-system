@@ -22,5 +22,10 @@ class DatabaseSeeder extends Seeder
             'password' => 'SuperAdmin123',
             'role' => 1,
         ]);
+
+        $this->call([
+            CategorySeeder::class,
+            UnitSeeder::class,
+        ]);
     }
 }
