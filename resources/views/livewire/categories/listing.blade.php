@@ -5,7 +5,7 @@
         <x-common.table-toolbar>
 
             <flux:modal.trigger name="create-category">
-                <flux:button variant="primary" size="sm" icon="plus-circle">
+                <flux:button variant="primary" size="sm" icon="plus-circle" :loading="false">
                     Add Category
                 </flux:button>
             </flux:modal.trigger>
@@ -36,7 +36,7 @@
                             </flux:table.cell>
                             <flux:table.cell align="center">
                                 <flux:modal.trigger name="update-category">
-                                    <flux:button variant="primary" size="sm" icon="pencil"
+                                    <flux:button variant="primary" size="sm" icon="pencil" :loading="false"
                                         wire:click="$dispatch('update-category', { categoryId: {{ $category->id }} })">
                                     </flux:button>
                                 </flux:modal.trigger>
