@@ -2,6 +2,7 @@
 
 use App\Livewire\Users\Listing as UsersListing;
 use App\Livewire\Categories\Listing as CategoriesListing;
+use App\Livewire\Units\Listing as UnitsListing;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
@@ -15,6 +16,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('categories')->group(function () {
         Route::livewire('/', CategoriesListing::class)->name('categories.listing');
+    });
+
+    Route::prefix('units')->group(function () {
+        Route::livewire('/', UnitsListing::class)->name('units.listing');
     });
 
 });
