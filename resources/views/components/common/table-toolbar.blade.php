@@ -6,7 +6,7 @@
             class="w-full"
             icon="magnifying-glass"
             placeholder="Search..."
-        />
+        clearable />
     </div>
 
     <div>
