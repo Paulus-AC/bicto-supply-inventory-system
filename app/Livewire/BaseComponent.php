@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Helpers\QueryHelper;
 use Exception;
 use Flux\Flux;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -16,11 +18,57 @@ abstract class BaseComponent extends Component
 
     public string $search = '';
 
+    public string $sortBy = 'id';
+
+    public string $sortDirection = 'desc';
+
+    public array $filters = [];
+
+    /**
+     * Sort the given column.
+     */
+    public function sort(string $column): void
+    {
+        if ($this->sortBy === $column) {
+            $this->sortDirection =
+                $this->sortDirection === 'asc'
+                    ? 'desc'
+                    : 'asc';
+
+            return;
+        }
+
+        $this->sortBy = $column;
+        $this->sortDirection = 'asc';
+
+        $this->resetPage();
+    }
+
     /**
      * Reset pagination whenever search changes.
      */
     public function updatedSearch(): void
     {
+        $this->resetPage();
+    }
+
+    /**
+     * Reset pagination whenever a filter changes.
+     */
+    public function updatedFilters(): void
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * Clear all filters and search.
+     */
+    public function clearFilters(): void
+    {
+        $this->search = '';
+
+        $this->filters = [];
+
         $this->resetPage();
     }
 
@@ -83,16 +131,6 @@ abstract class BaseComponent extends Component
     }
 
     /**
-     * Reset search and pagination.
-     */
-    protected function clearFilters(): void
-    {
-        $this->search = '';
-
-        $this->resetPage();
-    }
-
-    /**
      * Log exception details.
      */
     protected function reportException(
@@ -104,5 +142,21 @@ abstract class BaseComponent extends Component
             'file' => $exception->getFile(),
             'line' => $exception->getLine(),
         ]);
+    }
+
+    /**
+     * Search callback for Eloquent queries.
+     */
+    protected function searchCallback(Builder $query, ?string $search = '', array $targets = []): Builder
+    {
+        return QueryHelper::searchCallback($query, $search, $targets);
+    }
+
+    /**
+     * Apply filters to an Eloquent query.
+     */
+    protected function filterCallback(Builder $query, array $filters = [], array $definitions = []): Builder 
+    {
+        return QueryHelper::filterCallback($query, $filters, $definitions);
     }
 }
