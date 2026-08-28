@@ -2,7 +2,7 @@
 
 use App\Livewire\Users\Listing as UsersListing;
 use App\Livewire\Items\Listing as ItemsListing;
-use App\Livewire\Items\Create as ItemsCreate;
+use App\Livewire\Items\View as ItemsView;
 use App\Livewire\Categories\Listing as CategoriesListing;
 use App\Livewire\Units\Listing as UnitsListing;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('items')->group(function() {
         Route::livewire('/', ItemsListing::class)->name('items.listing');
+        Route::livewire('/view/{id}', ItemsView::class)->name('items.view');
     });
 
     Route::prefix('categories')->group(function () {
