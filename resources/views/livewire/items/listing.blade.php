@@ -37,7 +37,8 @@
                 <flux:table :paginate="$items">
                     <flux:table.columns>
                         <flux:table.column align="center" sortable :sorted="$sortBy === 'id'"
-                            :direction="$sortDirection" wire:click="sort('id')">{{ __('ID') }}</flux:table.column>
+                            :direction="$sortDirection" wire:click="sort('id')">{{ __('ID') }}
+                        </flux:table.column>
                         <flux:table.column align="center" sortable :sorted="$sortBy === 'name'"
                             :direction="$sortDirection" wire:click="sort('name')">{{ __('Item Name') }}
                         </flux:table.column>
@@ -62,7 +63,7 @@
                                     </flux:badge>
                                 </flux:table.cell>
                                 <flux:table.cell align="center">
-                                    <flux:button variant="primary" size="sm" icon="eye" :loading="false"></flux:button>
+                                    <flux:button variant="primary" size="sm" icon="eye" :loading="false" :href="route('items.view', $item)"></flux:button>
                                     <flux:button variant="primary" size="sm" icon="pencil" :loading="false"></flux:button>
                                 </flux:table.cell>
                             </flux:table.row>
