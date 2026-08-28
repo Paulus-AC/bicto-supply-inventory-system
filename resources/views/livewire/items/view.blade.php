@@ -46,7 +46,7 @@
         </div>
 
         <div class="mt-10">
-            <div class="h-105">
+            <div class="h-100">
                 <flux:table container:class="max-h-96">
                     <flux:table.columns sticky class="bg-white dark:bg-zinc-900">
                         <flux:table.column align="center">ID</flux:table.column>
