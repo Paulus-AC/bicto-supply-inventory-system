@@ -3,8 +3,8 @@
         class="m-5 rounded-sm border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
 
         <div class="px-5 flex flex-row items-center justify-between">
-            <flux:heading variant="strong" size="xl">Details</flux:heading>
-            <flux:button variant="primary" icon="arrow-left" :loading="false" :href="route('items.listing')">
+            <flux:heading variant="strong" size="lg">Details</flux:heading>
+            <flux:button variant="primary" size="sm" icon="arrow-left" :loading="false" :href="route('items.listing')">
                 Back
             </flux:button>
         </div>
@@ -39,8 +39,8 @@
         class="m-5 mt-12 rounded-sm border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
 
         <div class="px-5 flex flex-row items-center justify-between">
-            <flux:heading variant="strong" size="xl">Stock Flow</flux:heading>
-            <flux:button variant="primary" icon="plus" :loading="false">
+            <flux:heading variant="strong" size="lg">Stock Flow</flux:heading>
+            <flux:button variant="primary" size="sm" icon="plus" :loading="false">
                 Add Transaction
             </flux:button>
         </div>
