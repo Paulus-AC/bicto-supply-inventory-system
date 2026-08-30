@@ -27,7 +27,7 @@ class Listing extends BaseComponent
     }
 
     #[On('item-created')]
-    // #[On('item-updated')]
+    #[On('item-updated')]
     public function refreshItems(): void 
     {
 
