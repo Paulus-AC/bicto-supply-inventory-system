@@ -6,7 +6,6 @@ use App\Livewire\BaseComponent;
 use App\Livewire\Forms\UpdateUserForm;
 use App\Models\User;
 use Exception;
-use Flux\Flux;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 

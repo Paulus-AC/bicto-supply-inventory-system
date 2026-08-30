@@ -13,9 +13,9 @@ class Transaction extends Model
     public const OUT_TYPE = 2;
     public const ADJUST_TYPE = 3;
     public const TRANSACTION_TYPES = [
-        self::IN_TYPE => 'In',
-        self::OUT_TYPE => 'Out',
-        self::ADJUST_TYPE => 'Adjust',
+        self::IN_TYPE => 'Stock In',
+        self::OUT_TYPE => 'Stock Out',
+        self::ADJUST_TYPE => 'Adjustment',
     ];
 
     /**

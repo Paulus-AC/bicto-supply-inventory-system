@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('unit_id')->index();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->decimal('balance', 12, 3)->default(0);
+            $table->integer('balance')->default(0);
             $table->smallInteger('status')->default(1);
             
             $table->timestamps();
