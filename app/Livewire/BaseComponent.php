@@ -155,7 +155,7 @@ abstract class BaseComponent extends Component
     /**
      * Apply filters to an Eloquent query.
      */
-    protected function filterCallback(Builder $query, array $filters = [], array $definitions = []): Builder 
+    protected function filterCallback(Builder $query, array $filters = [], array $definitions = []): Builder
     {
         return QueryHelper::filterCallback($query, $filters, $definitions);
     }
