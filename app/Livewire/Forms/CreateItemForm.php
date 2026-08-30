@@ -16,7 +16,7 @@ class CreateItemForm extends Form
 
     public ?int $balance = null;
 
-    public string $description = '';
+    public ?string $description = '';
 
     public function rules(): array
     {
