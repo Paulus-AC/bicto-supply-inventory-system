@@ -44,4 +44,9 @@ class Item extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', self::ACTIVE_STATUS);
+    }
 }

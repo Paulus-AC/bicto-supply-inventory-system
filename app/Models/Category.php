@@ -10,6 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable(['name', 'status'])]
 class Category extends Model
 {
+    public const INACTIVE_STATUS = 0;
+    public const ACTIVE_STATUS = 1;
+
+    public const STATUS_TYPES = [
+        self::INACTIVE_STATUS => 'Inactive',
+        self::ACTIVE_STATUS => 'Active',
+    ];
+    
     public function items()
     {
         return $this->hasMany(Item::class);
