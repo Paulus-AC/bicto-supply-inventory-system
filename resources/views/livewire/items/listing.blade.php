@@ -32,7 +32,7 @@
         </x-common.table-toolbar>
 
         <div
-            class="mt-2 w-full rounded-xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
+            class="w-full rounded-xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
 
             <flux:table :paginate="$items">
                 <flux:table.columns>
