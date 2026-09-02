@@ -3,10 +3,8 @@
 namespace App\Livewire\Items;
 
 use App\Livewire\Forms\CreateItemForm;
-use App\Models\Category;
-use App\Models\Unit;
+use App\Services\ItemService;
 use App\Livewire\BaseComponent;
-use App\Models\Item;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -14,11 +12,26 @@ class Create extends BaseComponent
 {
     public CreateItemForm $form;
 
+    private ItemService $itemService;
+
+    /**
+     * Boot the component with the ItemService.
+     * 
+     * @param ItemService $itemService 
+     */
+    public function boot(ItemService $itemService)
+    {
+        $this->itemService = $itemService;
+    }
+
     public function render()
     {
+        $units = $this->itemService->fetchItemUnits();
+        $categories = $this->itemService->fetchItemCategories();
+
         return view('livewire.items.create', [
-            'categories' => $this->fetchCategories(),
-            'units' => $this->fetchUnits()
+            'categories' => $categories,
+            'units' => $units
         ]);
     }
 
@@ -29,9 +42,7 @@ class Create extends BaseComponent
         DB::beginTransaction();
         try {
 
-            Item::create(
-                $this->form->payload()
-            );
+            $this->itemService->createItem($this->form->payload());
 
             $this->form->reset();
 
@@ -40,6 +51,7 @@ class Create extends BaseComponent
                 modal: 'create-item',
                 event: 'item-created'
             );
+
             DB::commit();
 
         } catch (Exception $exception) {
@@ -52,15 +64,5 @@ class Create extends BaseComponent
                 modal: 'create-item'
             );
         }
-    }
-
-    private function fetchCategories()
-    {
-        return Category::where('status', 1)->get();
-    }
-
-    private function fetchUnits()
-    {
-        return Unit::where('status', 1)->get();
     }
 }

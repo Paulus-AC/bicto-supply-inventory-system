@@ -3,12 +3,13 @@
 namespace App\Livewire\Items;
 
 use App\Livewire\BaseComponent;
-use App\Models\Item;
 use App\Services\ItemService;
 use Livewire\Attributes\On;
 
 class Listing extends BaseComponent
 {
+    private ItemService $itemService;
+
     public array $filters = [
         'in_stock' => false,
         'out_of_stock' => false,
@@ -17,6 +18,20 @@ class Listing extends BaseComponent
 
     public string $sortBy = 'balance';
 
+    /**
+     * Boot the component with the ItemService.
+     * 
+     * @param ItemService $itemService 
+     */
+    public function boot(ItemService $itemService)
+    {
+        $this->itemService = $itemService;
+    }
+
+    /**
+     * Render the component.
+     * @return \Illuminate\Contracts\View\View
+     */
     public function render()
     {
         $items = $this->fetchItemListings();
@@ -26,6 +41,11 @@ class Listing extends BaseComponent
         ]);
     }
 
+    /**
+     * Refresh the items when an item is created or updated.
+     *
+     * @return void
+     */
     #[On('item-created')]
     #[On('item-updated')]
     public function refreshItems(): void 
@@ -33,6 +53,12 @@ class Listing extends BaseComponent
 
     }
 
+    /**
+     * Handle the updated filters for in_stock and out_of_stock.
+     *
+     * @param bool $value
+     * @return void
+     */
     public function updatedFiltersInStock(bool $value): void
     {
         if ($value) {
@@ -42,6 +68,12 @@ class Listing extends BaseComponent
         $this->resetPage();
     }
 
+    /**
+     * Handle the updated filters for out_of_stock and in_stock.
+     *
+     * @param bool $value
+     * @return void
+     */
     public function updatedFiltersOutOfStock(bool $value): void
     {
         if ($value) {
@@ -51,28 +83,17 @@ class Listing extends BaseComponent
         $this->resetPage();
     }
 
-    private function fetchItemListings()
+    /**
+     * Fetch the item listings based on search and filters.
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function fetchItemListings()
     {
-        $items = Item::with(['category', 'unit'])
-            ->when(isset($this->search), function ($query) {
-                $query->where(function ($query) {
-                    $this->searchCallback($query, $this->search, ['name', 'category.name', 'unit.name', 'balance']);
-                });
-            })->when(isset($this->filters), function ($query){
-                $query->where(function ($query) {
-                    $filterItemData = $this->itemService()->getFilterItemData();
-
-                    $this->filterCallback($query, $this->filters, $filterItemData);
-                });
-            })
+        $paginatedItems = $this->itemService->getItemListings($this->search, $this->filters)
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate(self::PER_PAGE);
 
-        return $items;
-    }
-
-    private function itemService(): ItemService
-    {
-        return new ItemService();
+        return $paginatedItems;
     }
 }

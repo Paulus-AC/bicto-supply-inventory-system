@@ -2,25 +2,37 @@
 
 namespace App\Livewire\Items;
 
+use App\Livewire\BaseComponent;
 use App\Models\Item;
-use Livewire\Component;
+use App\Services\ItemService;
 
-class View extends Component
+class View extends BaseComponent
 {
     public int $id;
+
+    private ItemService $itemService;
+
+    /**
+     * Boot the component with the ItemService.
+     * 
+     * @param ItemService $itemService 
+     */
+    public function boot(ItemService $itemService)
+    {
+        $this->itemService = $itemService;
+    }
     
+    /**
+     * Render the component.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function render()
     {
-        $items = $this->getItems($this->id);
+        $items = $this->itemService->getItem($this->id);
+
         return view('livewire.items.view', [
             'items' => $items
         ]);
-    }
-
-    private function getItems(int $id)
-    {
-        $item = Item::findOrFail($id);
-
-        return $item;
     }
 }

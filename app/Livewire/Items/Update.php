@@ -12,11 +12,23 @@ use Illuminate\Support\Facades\DB;
 class Update extends BaseComponent
 {
     public UpdateItemForm $form;
+    
+    private ItemService $itemService;
+
+    /**
+     * Boot the component with the ItemService.
+     * 
+     * @param ItemService $itemService 
+     */
+    public function boot(ItemService $itemService)
+    {
+        $this->itemService = $itemService;
+    }
 
     public function render()
     {
-        $units = $this->itemService()->fetchItemUnits();
-        $categories = $this->itemService()->fetchItemCategories();
+        $units = $this->itemService->fetchItemUnits();
+        $categories = $this->itemService->fetchItemCategories();
 
         return view('livewire.items.update', [
             'units' => $units,
@@ -29,7 +41,7 @@ class Update extends BaseComponent
     {
         $this->form->reset();
 
-        $item = $this->itemService()->getItem($itemId);
+        $item = $this->itemService->getItem($itemId);
 
         $this->form->fillFromItem($item);
     }
@@ -38,14 +50,12 @@ class Update extends BaseComponent
     {
         $this->form->validate();
 
-        $item = $this->itemService()->getItem($this->form->item_id);
+        $item = $this->itemService->getItem($this->form->item_id);
 
         DB::beginTransaction();
         try {
 
-            $item->update(
-                $this->form->payload()
-            );
+            $this->itemService->updateItem($item, $this->form->payload());
 
             $this->form->reset();
 
@@ -64,10 +74,5 @@ class Update extends BaseComponent
                 modal: 'update-item'
             );
         }
-    }
-
-    private function itemService(): ItemService
-    {
-        return new ItemService();
     }
 }
