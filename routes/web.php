@@ -7,8 +7,7 @@ use App\Livewire\Categories\Listing as CategoriesListing;
 use App\Livewire\Units\Listing as UnitsListing;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('home');
-
+Route::redirect('/', '/login')->name('home');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
 
