@@ -9,15 +9,34 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Unit;
+use App\Services\UnitService;
 
 class Update extends BaseComponent
 {
     public UpdateUnitForm $form;
+    private UnitService $unitService;
+
+    /**
+     * Boot the component with the UnitService.
+     *
+     * @param UnitService $unitService
+     */
+    public function boot(UnitService $unitService)
+    {
+        $this->unitService = $unitService;
+    }
+
+    public function render()
+    {
+        return view('livewire.units.update');
+    }
 
     #[On('update-unit')]
     public function open(int $unitId): void
     {
-        $unit = Unit::findOrFail($unitId);
+        $this->form->reset();
+
+        $unit = $this->unitService->getUnit($unitId);
 
         $this->form->fillFromUnit($unit);
     }
@@ -26,13 +45,12 @@ class Update extends BaseComponent
     {
         $this->form->validate();
 
-        $unit = Unit::findOrFail($this->form->unit_id);
+        $unit = $this->unitService->getUnit($this->form->unit_id);
 
         DB::beginTransaction();
         try {
-        $unit->update(
-            $this->form->payload()
-        );
+        
+        $this->unitService->updateUnit($unit, $this->form->payload());
 
         $this->form->reset();
 
@@ -50,10 +68,5 @@ class Update extends BaseComponent
                 modal: 'update-unit'
             );
         }
-    }
-
-    public function render()
-    {
-        return view('livewire.units.update');
     }
 }

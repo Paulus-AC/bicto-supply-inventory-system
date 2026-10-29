@@ -6,11 +6,28 @@ use Exception;
 use App\Livewire\BaseComponent;
 use Illuminate\Support\Facades\DB;
 use App\Livewire\Forms\CreateUnitForm;
-use App\Models\Unit;
+use App\Services\UnitService;
 
 class Create extends BaseComponent
 {
     public CreateUnitForm $form;
+
+    private UnitService $UnitService;
+
+    /**
+     * Boot the component with the UnitService.
+     * 
+     * @param UnitService $UnitService 
+     */
+    public function boot(UnitService $UnitService)
+    {
+        $this->UnitService = $UnitService;
+    }
+
+    public function render()
+    {
+        return view('livewire.units.create');
+    }
 
     public function createUnit(): void
     {
@@ -19,9 +36,7 @@ class Create extends BaseComponent
         DB::beginTransaction();
         try {
 
-            Unit::create(
-                $this->form->payload()
-            );
+            $this->UnitService->createUnit($this->form->payload());
 
             $this->form->reset();
 
@@ -41,10 +56,5 @@ class Create extends BaseComponent
                 modal: 'create-unit'
             );
         }
-    }
-
-    public function render()
-    {
-        return view('livewire.units.create');
     }
 }
