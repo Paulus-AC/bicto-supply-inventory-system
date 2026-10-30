@@ -5,12 +5,24 @@ namespace App\Livewire\Categories;
 use App\Livewire\BaseComponent;
 use App\Livewire\Forms\CreateCategoryForm;
 use App\Models\Category;
+use App\Services\CategoryService;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
 class Create extends BaseComponent
 {
     public CreateCategoryForm $form;
+    private CategoryService $categoryService;
+
+    /**
+     * Boot the component with the Category Service
+     * 
+     * @param CategoryService $categoryService
+     */
+    public function boot(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
 
     public function createCategory(): void
     {
@@ -19,9 +31,9 @@ class Create extends BaseComponent
         DB::beginTransaction();
         try {
 
-            Category::create(
+            $this->categoryService->createCategory(
                 $this->form->payload()
-            );
+            );    
 
             $this->form->reset();
 

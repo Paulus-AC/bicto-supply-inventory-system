@@ -8,15 +8,29 @@ use App\Models\Category;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use App\Livewire\BaseComponent;
+use App\Services\CategoryService;
 
 class Update extends BaseComponent
 {
     public UpdateCategoryForm $form;
+    private CategoryService $categoryService;
+
+    /**
+     * Boot the component with the Category Service
+     * 
+     * @param CategoryService $categoryService
+     */
+    public function boot(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
 
     #[On('update-category')]
     public function open(int $categoryId): void
     {
-        $category = Category::findOrFail($categoryId);
+        $this->form->reset();
+
+        $category = $this->categoryService->getCategory($categoryId);
 
         $this->form->fillFromCategory($category);
     }
@@ -25,13 +39,11 @@ class Update extends BaseComponent
     {
         $this->form->validate();
 
-        $category = Category::findOrFail($this->form->category_id);
+        $category = $this->categoryService->getCategory($this->form->category_id);
 
         DB::beginTransaction();
         try {
-            $category->update(
-                $this->form->payload()
-            );
+            $this->categoryService->updateCategory($category, $this->form->payload());
 
             $this->form->reset();
 

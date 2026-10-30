@@ -5,9 +5,22 @@ namespace App\Livewire\Categories;
 use App\Livewire\BaseComponent;
 use Livewire\Attributes\On;
 use App\Models\Category;
+use App\Services\CategoryService;
 
 class Listing extends BaseComponent
 {
+    private CategoryService $categoryService;
+
+    /**
+     * Boot the component with the Category Service
+     * 
+     * @param CategoryService $categoryService
+     */
+    public function boot(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
     public function render()
     {
         $categories = $this->fetchCategoryListings();
@@ -24,14 +37,16 @@ class Listing extends BaseComponent
 
     }
 
+    /**
+     * Fetch the category listings based on the search term
+     * 
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     private function fetchCategoryListings()
     {
-        $categories = Category::search($this->search)
-            ->withCount('items')
-            ->orderBy('status', 'desc')
-            ->orderBy('name', 'asc')
+        $paginatedCategories = $this->categoryService->getCategoryListings($this->search)
             ->paginate(self::PER_PAGE);
 
-        return $categories;
+        return $paginatedCategories;
     }
 }
