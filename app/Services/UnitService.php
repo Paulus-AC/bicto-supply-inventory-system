@@ -9,6 +9,7 @@ class UnitService
     /**
      * Get the unit listings based on search.
      *
+     * @param string $search
      * @return \Illuminate\Database\Query\Builder
      */
     public function getUnitListings(string $search)
@@ -52,7 +53,7 @@ class UnitService
      * @param int $unitId
      * @return Unit|null
      */
-    public function getUnit($unitId): ?Unit
+    public function getUnit(int $unitId): ?Unit
     {
         return Unit::findOrFail($unitId);
     }
